@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>clear</name>
+  <version>1.0.0</version>
+
+  <description>MIT ACL's CLEAR algorithm for fusing object-level robot maps.</description>
+
+  <maintainer email="kavehfathian@gmail.com">Kaveh Fathian</maintainer>
+  <license>MIT</license>
+  <!-- <url></url> -->
+
+  <buildtool_depend>cmake</buildtool_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+  
+  <depend>roscpp</depend>
+  <depend>tf2_eigen</depend>
+  <depend>pcl_ros</depend>
+  <depend>pcl_conversions</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>visualization_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>eigen</depend>
+  <build_depend>roslaunch</build_depend>
+  <build_depend>Boost</build_depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+</package>

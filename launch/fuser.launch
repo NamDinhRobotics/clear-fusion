@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+<!-- run clear fusion -->
+<!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+
+ <node pkg="clear" type="fuser" name="fuser" output="screen">
+   <!-- set params -->
+   <param name="num_robots" value="3"/>
+   <param name="dist_tol" value="5"/>
+ </node>
+
+
+</launch>
+
+
+
+
+     
