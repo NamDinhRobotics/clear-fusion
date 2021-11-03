@@ -26,9 +26,15 @@
 Fuser::Fuser(const ros::NodeHandle& nh_, const ros::NodeHandle& nhp_) 
 : nh(nh_), nhp(nhp_) 
 {
-	nhp.getParam("num_robots", num_robots);
-	ROS_INFO_STREAM("num_robots: " << num_robots);
-	if (num_robots==0) return;
+	
+	std::vector<std::string> robots;
+	if(!nhp_.getParam("robots", robots)) {
+		ROS_FATAL("Must specify array of robot names in param `robots`");
+		ros::shutdown();
+	}
+
+	num_robots = robots.size();
+
 	// CLEAR params
 	nhp.getParam("dist_tol", dist_tol); 
 	ROS_INFO_STREAM("dist_tol: " << dist_tol);
@@ -42,10 +48,10 @@ Fuser::Fuser(const ros::NodeHandle& nh_, const ros::NodeHandle& nhp_)
 	map.resize(num_robots);
 	SubmapSizes.resize(num_robots);
 
-	for (size_t i; i<num_robots; ++i) {
+	for (size_t i; i < robots.size(); ++i) {
 		boost::function<void(const sensor_msgs::PointCloud2ConstPtr& msg)> cb =
 			[=] (const sensor_msgs::PointCloud2ConstPtr& msg) {landmarks_cb(msg, i);};
-		sub_r_landmarks[i] = nh.subscribe("/robot"+std::to_string(i+1)+"/landmarks_aligned", 1, cb);
+		sub_r_landmarks[i] = nh.subscribe("/" + robots[i] + "/landmarks_aligned", 1, cb);
 		
 	}
 
