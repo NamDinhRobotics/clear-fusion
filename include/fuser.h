@@ -62,6 +62,7 @@ private:
 	ros::NodeHandle nh, nhp;
 	ros::Timer tim_fuser;
 	double fuser_dt; /// Period of fuser runs and visualization
+	std::string frame_id;
 	
 	// Subscribers (for each robot)
 	std::vector<ros::Subscriber> sub_r_landmarks;

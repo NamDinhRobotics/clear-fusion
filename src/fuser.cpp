@@ -25,8 +25,7 @@
 
 Fuser::Fuser(const ros::NodeHandle& nh_, const ros::NodeHandle& nhp_) 
 : nh(nh_), nhp(nhp_) 
-{
-	
+{	
 	std::vector<std::string> robots;
 	if(!nhp_.getParam("robots", robots)) {
 		ROS_FATAL("Must specify array of robot names in param `robots`");
@@ -45,6 +44,7 @@ Fuser::Fuser(const ros::NodeHandle& nh_, const ros::NodeHandle& nhp_)
 
 	// initialize subscribers for all robots
 	sub_r_landmarks.resize(num_robots);
+
 	map.resize(num_robots);
 	SubmapSizes.resize(num_robots);
 
@@ -85,6 +85,9 @@ void Fuser::landmarks_cb(const sensor_msgs::PointCloud2ConstPtr& msg, const uint
 		ept << pt.x, pt.y, pt.z;
 		submap.emplace_back(ept);
 	}
+
+	// find frame_id
+	if (frame_id.empty()) frame_id = ptcloud->header.frame_id;
 
 	map[i] = submap; // all robot landmarks
 	SubmapSizes[i] = submap.size();
@@ -161,7 +164,7 @@ void Fuser::timer_cb(const ros::TimerEvent& event)
 	// Publish
 	sensor_msgs::PointCloud fused_landmark_cloud;
 	fused_landmark_cloud.header.stamp = ros::Time::now();
-	fused_landmark_cloud.header.frame_id = "R1";
+	fused_landmark_cloud.header.frame_id = frame_id;
 	for (uint i = 0; i < m; ++i){
 		geometry_msgs::Point32 p;
 		p.x = fusedPositions[i](0);
@@ -172,7 +175,7 @@ void Fuser::timer_cb(const ros::TimerEvent& event)
 
 	sensor_msgs::PointCloud2 fused_set_msg;
     sensor_msgs::convertPointCloudToPointCloud2(fused_landmark_cloud, fused_set_msg);
-	fused_set_msg.header.frame_id = "R1";
+	fused_set_msg.header.frame_id = frame_id;
 
 	pub_fused_landmarks.publish(fused_set_msg);
 }
@@ -244,8 +247,8 @@ void Fuser::multiway_match()
 	Multimatcher->get_assignments(assignments);
 	Multimatcher->get_fused_counts(fusedCounts);
 
-	ROS_WARN_STREAM("CLEAR multiway fusion returned " << fusedCounts.size() 
-		<< " objects in " << ros::Time::now().toSec() - start_time << " sec.");
+	// ROS_INFO_STREAM("CLEAR multiway fusion returned " << fusedCounts.size() 
+	// 	<< " objects in " << ros::Time::now().toSec() - start_time << " sec.");
 
 	// ROS_INFO_STREAM("CLEAR multiway match complete in " << ros::Time::now().toSec() - start_time << " sec.");
 }

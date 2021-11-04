@@ -4,7 +4,7 @@
 <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 <!-- load clipper-aligner running on OrcVIO bags -->
 <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
-<include file="$(find clipper)/launch/aligner_demo.launch" />
+<include file="$(find clipper)/launch/aligner_demo_sim.launch" />
 
 
 <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
@@ -13,7 +13,8 @@
 
  <node pkg="clear" type="fuser" name="fuser" output="screen">
    <!-- set params -->
-   <param name="num_robots" value="3"/>
+   <rosparam param="robots"> ["robot1", "robot2"]</rosparam>
+
    <param name="dist_tol" value="5"/>
  </node>
 
